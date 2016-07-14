@@ -10,10 +10,12 @@
 					</tr>
 				<thead>
 				<tbody>
+					<?php foreach ($categories as $category): ?>
 					<tr>
-						<th>1</th>
-						<th>Teste</th>
+						<th><?php echo $category->getId(); ?></th>
+						<th><?php echo $category->getNome(); ?></th>
 					</tr>
+					<?php endforeach; ?>
 				<tbody>
 			</table>
 		</div>

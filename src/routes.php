@@ -21,6 +21,10 @@ $map->get('home', '/', function($request, $response) use ($view) {
 	]);
 });
 
+$map->get('categories.list', '/categories', function($request, $response) use ($view) {
+	return $view->render($response, 'categories/list.phtml');
+});
+
 $matcher = $routerContainer->getMatcher();
 
 $route = $matcher->match($request);

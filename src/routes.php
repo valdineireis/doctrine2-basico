@@ -5,6 +5,7 @@ use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 use Slim\Views\PhpRenderer;
 use App\Entity\Category;
+use Psr\Http\Message\ServerRequestInterface;
 
 $request = ServerRequestFactory::fromGlobals(
 	$_SERVER, $_GET, $_POST, $_COOKIE, $_FILES
@@ -12,6 +13,7 @@ $request = ServerRequestFactory::fromGlobals(
 
 $routerContainer = new RouterContainer();
 
+$genarator = $routerContainer->getGenerator();
 $map = $routerContainer->getMap();
 
 $view = new PhpRenderer(__DIR__ . '/../templates/');
@@ -37,6 +39,20 @@ $map->get('categories.create', '/categories/create', function($request, $respons
 	return $view->render($response, 'categories/create.phtml');
 });
 
+$map->post('categories.store', '/categories/store', 
+	function(ServerRequestInterface $request, $response) use ($view, $entityManager, $genarator) {
+		$data = $request->getParsedBody();
+		$category = new Category();
+		$category->setNome($data['nome']);
+
+		$entityManager->persist($category);
+		$entityManager->flush();
+
+		$uri = $genarator->generate('categories.list');
+		return new Response\RedirectResponse($uri);
+	}
+);
+
 $matcher = $routerContainer->getMatcher();
 
 $route = $matcher->match($request);
@@ -50,4 +66,8 @@ $callable = $route->handler;
 /** @var Response $response */
 $response = $callable($request, new Response());
 
-echo $response->getBody();
+if ($response instanceof Response\RedirectResponse) {
+	header("location:{$response->getHeader("location")[0]}");
+} elseif ($response instanceof Response) {
+	echo $response->getBody();
+}

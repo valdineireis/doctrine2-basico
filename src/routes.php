@@ -79,6 +79,20 @@ $map->post('categories.update', '/categories/{id}/update',
 	}
 );
 
+$map->get('categories.remove', '/categories/{id}/remove', 
+	function(ServerRequestInterface $request, $response) use ($view, $entityManager, $genarator) {
+		$id = $request->getAttribute('id');
+		$repository = $entityManager->getRepository(Category::class);
+		$category = $repository->find($id);
+
+		$entityManager->remove($category);
+		$entityManager->flush();
+
+		$uri = $genarator->generate('categories.list');
+		return new Response\RedirectResponse($uri);
+	}
+);
+
 $matcher = $routerContainer->getMatcher();
 
 $route = $matcher->match($request);

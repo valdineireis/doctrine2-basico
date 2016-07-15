@@ -4,12 +4,6 @@ use App\Entity\Category;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response;
 
-$map->get('home', '/', function($request, $response) use ($view) {
-	return $view->render($response, 'home.phtml', [
-		'test' => 'Slim PHP View funcionando!!!'
-	]);
-});
-
 $map->get('categories.list', '/categories', function($request, $response) use ($view, $entityManager) {
 	$repository = $entityManager->getRepository(Category::class);
 	$categories = $repository->findAll();

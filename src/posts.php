@@ -94,16 +94,23 @@ $map->get('posts.categories', '/posts/{id}/categories',
 $map->post('posts.set-categories', '/posts/{id}/set-categories', 
 	function(ServerRequestInterface $request, $response) use ($view, $entityManager, $genarator) {
 		$id = $request->getAttribute('id');
+		$data = $request->getParsedBody();
 		$repository = $entityManager->getRepository(Post::class);
+		$categoryRepository = $entityManager->getRepository(Category::class);
+
+		/** @var Post $post */
 		$post = $repository->find($id);
 
-		$data = $request->getParsedBody();
-
-		/*$post->setTitulo($data['titulo'])
-			->setConteudo($data['conteudo']);
+		$post->getCategories()->clear();
 		$entityManager->flush();
 
-		$uri = $genarator->generate('posts.list');*/
+		foreach ($data['categories'] as $idCategory) {
+			$category = $categoryRepository->find($idCategory);
+			$post->addCategory($category);
+		}
+		$entityManager->flush();
+
+		$uri = $genarator->generate('posts.list');
 		return new Response\RedirectResponse($uri);
 	}
 );

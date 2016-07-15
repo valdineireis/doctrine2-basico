@@ -32,7 +32,7 @@ class Post
 
 	public function getTitulo()
 	{
-		return $this->nome;
+		return $this->titulo;
 	}
 
 	public function setTitulo($titulo)
@@ -43,7 +43,7 @@ class Post
 
 	public function getConteudo()
 	{
-		return $this->nome;
+		return $this->conteudo;
 	}
 
 	public function setConteudo($conteudo)

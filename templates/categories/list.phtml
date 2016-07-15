@@ -8,13 +8,15 @@
 					<tr>
 						<th>ID</th>
 						<th>Name</th>
+						<th>Ações</th>
 					</tr>
 				<thead>
 				<tbody>
 					<?php foreach ($categories as $category): ?>
 					<tr>
-						<th><?php echo $category->getId(); ?></th>
-						<th><?php echo $category->getNome(); ?></th>
+						<td><?php echo $category->getId(); ?></td>
+						<td><?php echo $category->getNome(); ?></td>
+						<td><?php echo "<a href='/categories/{$category->getId()}/edit'>Editar</a>"; ?></td>
 					</tr>
 					<?php endforeach; ?>
 				<tbody>

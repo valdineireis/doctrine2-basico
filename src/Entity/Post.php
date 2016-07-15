@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @Entity
  * @Table(name="posts")
@@ -30,6 +32,11 @@ class Post
 	 */
 	private $categories;
 
+	public function __construct()
+	{
+		$this->categories = new ArrayCollection();
+	}
+
 	public function getId()
 	{
 		return $this->id;
@@ -57,14 +64,17 @@ class Post
 		return $this;
 	}
 
+	/**
+	 * @return ArrayCollection
+	 */
 	public function getCategories()
 	{
 		return $this->categories;
 	}
 
-	public function setCategories($categories)
+	public function addCategory(Category $category)
 	{
-		$this->categories = $categories;
+		$this->categories->add($category);
 		return $this;
 	}
 }

@@ -25,6 +25,11 @@ class Post
 	 */
 	private $conteudo;
 
+	/**
+	 * @ManyToMany(targetEntity="App\Entity\Category")
+	 */
+	private $categories;
+
 	public function getId()
 	{
 		return $this->id;
@@ -49,6 +54,17 @@ class Post
 	public function setConteudo($conteudo)
 	{
 		$this->conteudo = $conteudo;
+		return $this;
+	}
+
+	public function getCategories()
+	{
+		return $this->categories;
+	}
+
+	public function setCategories($categories)
+	{
+		$this->categories = $categories;
 		return $this;
 	}
 }
